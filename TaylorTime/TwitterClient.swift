@@ -64,12 +64,12 @@ class TwitterClient {
         }
         
         let task = session.dataTaskWithRequest(request) {
-            (data: NSData!, response: NSURLResponse!, error: NSError!) -> () in
+            (data: NSData!, response: NSURLResponse!, 😞: NSError!) -> () in
             
             // Decode the data, which we're expecting to be an array.
             // We're relying on the toll-free bridge between Swift and Cocoa's collection types here.
             
-            if error
+            if 😞
             {
                 completion(tweets:nil)
             }
@@ -137,11 +137,11 @@ class TwitterClient {
         // because the closure is the last parameter of the function.
         
         let task=session.dataTaskWithRequest(request) {
-            (data: NSData!, response: NSURLResponse!, error: NSError!) -> () in
+            (data: NSData!, response: NSURLResponse!, 😞: NSError!) -> () in
             
-            if error
+            if 😞
             {
-                println(error)
+                println(😞)
                 completion(success: false, bearerToken: nil)
             }
             else
