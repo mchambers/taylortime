@@ -34,7 +34,8 @@ import UIKit
     [BOOM]!
 */
 
-class ViewController: UIViewController {
+class ViewController: UIViewController
+{
     
     @IBOutlet var quoteLabel : UILabel
     
@@ -50,10 +51,7 @@ class ViewController: UIViewController {
     @IBAction func newQuoteButton(sender : UIButton) {
         quoteLabel.text="Fetching more Taylor feels from Twitter..."
         
-        let client=TwitterClient()
-        
-        client.apiKey="**YOUR API KEY HERE**"
-        client.apiSecret="**YOUR API SECRET HERE**"
+        let client=TwitterClient(apiKey: "wZlo8R8BIrvRoxpstVM7A30db", apiSecret: "YYXehQzaRap3AHPxfvvRuQ3YdXzBRjnkCU8z9pAplGqr9tymNM")
         
         client.getBearerToken {
             (success: Bool, bearerToken: String?) -> () in

@@ -44,39 +44,43 @@ class TwitterClient {
     
     let session = NSURLSession(configuration: NSURLSessionConfiguration.ephemeralSessionConfiguration())
     
-    init() {
-        apiKey=""
-        apiSecret=""
+    init(apiKey: String, apiSecret: String)
+    {
+        self.apiKey = apiKey
+        self.apiSecret = apiSecret
     }
     
     // A quick way to get the latest tweets for the specified Twitter handle.
     // Requires you've already let it go fetch the bearer token.
     // If something goes wrong, and I mean anything, just returns a nil array.
     func getLatestTweetsForUser(screenName:String, completion:(tweets:Array<Tweet>?) -> ()) {
-        var request=NSMutableURLRequest(URL: NSURL(string: "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name="+screenName))
+        var request = NSMutableURLRequest(URL: NSURL(string: "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name="+screenName))
         
         request.HTTPMethod="GET"
         
-        if accessToken {
+        if accessToken
+        {
             request.setValue("Bearer "+accessToken!, forHTTPHeaderField: "Authorization")
         }
         
-        let task=session.dataTaskWithRequest(request) {
+        let task = session.dataTaskWithRequest(request) {
             (data: NSData!, response: NSURLResponse!, error: NSError!) -> () in
             
             // Decode the data, which we're expecting to be an array.
             // We're relying on the toll-free bridge between Swift and Cocoa's collection types here.
             
-            if error {
+            if error
+            {
                 completion(tweets:nil)
-            } else {
+            }
+            else
+            {
                 if let timelineData:NSArray?=NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) as? NSArray {
                     
                     // We're getting back an NSArray of NSDictionary objects. Gross!
                     // Let's give our Swifty application the Swift objects it deserves.
                     
                     // Let's iterate the objects and Swiftify them.
-                    
                     var tweets=Array<Tweet>()
                     
                     for timelineObject:AnyObject in timelineData! {
@@ -86,15 +90,19 @@ class TwitterClient {
                         // and just be like, hey, here's the text of the tweet. That's what you really want.
 
                         let timelineDict:Dictionary<NSString,AnyObject>? = timelineObject as? Dictionary<NSString,AnyObject>
-                        if timelineDict {
-                            if let tweetText:AnyObject=timelineDict!["text"] {
+                        if timelineDict
+                        {
+                            if let tweetText:AnyObject=timelineDict!["text"]
+                            {
                                 tweets+=Tweet(text: tweetText as? String)
                             }
                         }
                     }
                     
                     completion(tweets: tweets)
-                } else {
+                }
+                else
+                {
                     completion(tweets: nil)
                 }
             }
@@ -103,8 +111,10 @@ class TwitterClient {
         task.resume()
     }
     
-    func getBearerToken(completion: (success: Bool, bearerToken: String?) -> ()) {
-        if apiKey=="" || apiSecret=="" {
+    func getBearerToken(completion: (success: Bool, bearerToken: String?) -> ())
+    {
+        if apiKey == "" || apiSecret == ""
+        {
             completion(success: false, bearerToken:nil)
             return
         }
@@ -129,32 +139,38 @@ class TwitterClient {
         let task=session.dataTaskWithRequest(request) {
             (data: NSData!, response: NSURLResponse!, error: NSError!) -> () in
             
-            if error {
+            if error
+            {
                 println(error)
                 completion(success: false, bearerToken: nil)
-            } else {
+            }
+            else
+            {
                 
                 // Decode the response. We do an awful lot of checking here.
                 // If this operation failed, the JSON decoding will fail and we'll
                 // simply fall through to "couldn't decode JSON data."
                 
-                if let tokenResponse:Dictionary<NSString,AnyObject>?=NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) as? Dictionary<NSString,AnyObject> {
-                    if let bearerToken:AnyObject=tokenResponse!["access_token"] {
+                if let tokenResponse:Dictionary<NSString,AnyObject>?=NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) as? Dictionary<NSString,AnyObject>
+                {
+                    if let bearerToken:AnyObject=tokenResponse!["access_token"]
+                    {
                         self.accessToken=bearerToken as? String // Store the access token for later use.
                         completion(success: true, bearerToken: bearerToken as? String)
-                    } else {
+                    }
+                    else
+                    {
                         println("Couldn't fetch the bearer token")
                         completion(success: false, bearerToken: nil)
                     }
-                } else {
+                }
+                else
+                {
                     println("Couldn't decode JSON data")
                     completion(success: false, bearerToken: nil)
                 }
-                
             }
-            
         }
-        
         task.resume()
     }
 }
