@@ -15,7 +15,9 @@ What can I see in action?
 * Bridging between NSArray/NSDictionary and Swift arrays/dictionaries
 * Random number generation
 * Some struct initialization
-* Closures (and trailing closure syntax!)
+* Tuples!
+* Generics!
+* Closures! (and trailing closure syntax!)
 * The raw emotion of a lost soul, happy and free, yet so confused
 
 How do I run it?
