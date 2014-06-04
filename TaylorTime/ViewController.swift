@@ -52,8 +52,8 @@ class ViewController: UIViewController {
         
         let client=TwitterClient()
         
-        client.apiKey="LgR07ZJtDtm7obY2DGR6riCjK"
-        client.apiSecret="OJHQNI5sRtQZi0s1AYIyIiIGtG070uKXcFUMyQx5KjbSQAGS54"
+        client.apiKey="**YOUR API KEY HERE**"
+        client.apiSecret="**YOUR API SECRET HERE**"
         
         client.getBearerToken {
             (success: Bool, bearerToken: String?) -> () in
